@@ -53,8 +53,12 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
+**Wave 1**
 
 - [ ] 02-01: Build `useVoiceCommander` hook with interim token streaming and confidence score calculation
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
 - [ ] 02-02: Build `/api/llm/cloud` route, spatial context injector, Zod schema guard, and action dispatcher
 
 ### Phase 3: Hybrid Fallback Integration
