@@ -1,17 +1,19 @@
 "use client";
 
-import React from "react";
-import { Mic, MicOff, AlertCircle, Sparkles, AudioWaveform } from "lucide-react";
+import React, { useState } from "react";
+import { Mic, AlertCircle, Sparkles, AudioWaveform, ChevronUp, ChevronDown, Send } from "lucide-react";
 import { UseVoiceCommanderReturn } from "@/hooks/useVoiceCommander";
 
 interface VoiceHUDProps {
   voiceCommander: UseVoiceCommanderReturn;
   lastParsedAction?: string | null;
+  onSimulateCommand?: (command: string) => void;
 }
 
 export default function VoiceHUD({
   voiceCommander,
   lastParsedAction,
+  onSimulateCommand,
 }: VoiceHUDProps) {
   const {
     isListening,
@@ -23,11 +25,82 @@ export default function VoiceHUD({
     toggleListening,
   } = voiceCommander;
 
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [inputText, setInputText] = useState("");
+
   // Format confidence percentage
   const confidencePercent = confidence > 0 ? Math.round(confidence * 100) : null;
 
+  const quickCommands = [
+    "Draw mindmap on Solar System",
+    "Set 5 minute timer for Sprint",
+    "Add note Quantum Computing",
+    "Connect last two nodes",
+  ];
+
+  const handleSimulate = (text: string) => {
+    if (onSimulateCommand && text.trim()) {
+      onSimulateCommand(text.trim());
+      setInputText("");
+    }
+  };
+
   return (
-    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 pointer-events-auto flex flex-col items-center gap-2 select-none max-w-2xl w-[92%] sm:w-auto">
+    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 pointer-events-auto flex flex-col items-center gap-2 select-none max-w-2xl w-[94%] sm:w-auto">
+      {/* Expandable Quick Prompt / Accessibility Drawer */}
+      {isExpanded && (
+        <div className="backdrop-blur-2xl bg-slate-900/95 border border-slate-700/80 shadow-2xl rounded-2xl p-3 w-full flex flex-col gap-2.5 animate-in fade-in slide-in-from-bottom-2 duration-200">
+          <div className="flex items-center justify-between text-xs text-slate-400 font-medium px-1">
+            <span className="flex items-center gap-1.5 text-indigo-400 font-semibold">
+              <Sparkles className="w-3.5 h-3.5" />
+              Voice Command Quick Palette
+            </span>
+            <span className="text-[10px] text-slate-500">Accessible Input</span>
+          </div>
+
+          {/* Quick chips */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+            {quickCommands.map((cmd) => (
+              <button
+                key={cmd}
+                onClick={() => handleSimulate(cmd)}
+                className="text-left px-2.5 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-[11px] text-slate-200 border border-slate-700/60 transition active:scale-98 truncate flex items-center justify-between group"
+              >
+                <span className="truncate">&ldquo;{cmd}&rdquo;</span>
+                <span className="text-slate-500 group-hover:text-indigo-400 text-[10px] ml-1 shrink-0 font-mono">
+                  run ↵
+                </span>
+              </button>
+            ))}
+          </div>
+
+          {/* Fallback Text Input */}
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSimulate(inputText);
+            }}
+            className="flex items-center gap-1.5 pt-1"
+          >
+            <input
+              type="text"
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
+              placeholder="Or type speech command manually (e.g. 'Add card Rocket Science')..."
+              className="flex-1 bg-slate-950/80 border border-slate-700/70 rounded-lg px-2.5 py-1 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500 font-sans"
+            />
+            <button
+              type="submit"
+              disabled={!inputText.trim()}
+              className="px-2.5 py-1 bg-indigo-600 hover:bg-indigo-500 disabled:bg-slate-800 disabled:text-slate-600 text-white rounded-lg text-xs font-medium transition flex items-center gap-1 shrink-0"
+            >
+              <Send className="w-3 h-3" />
+              <span>Send</span>
+            </button>
+          </form>
+        </div>
+      )}
+
       {/* Floating Glassmorphism Pill */}
       <div className="backdrop-blur-xl bg-slate-900/90 border border-slate-700/60 shadow-2xl rounded-full px-4 py-2.5 flex items-center gap-3.5 transition-all duration-300 w-full sm:w-auto">
         {/* Mic Toggle Button */}
@@ -50,7 +123,6 @@ export default function VoiceHUD({
           }
           aria-label={isListening ? "Mute microphone" : "Unmute microphone"}
         >
-          {/* Pulsing ring when listening */}
           {isListening && (
             <span className="absolute -inset-1 rounded-full bg-emerald-500/30 animate-ping opacity-75 pointer-events-none" />
           )}
@@ -63,7 +135,7 @@ export default function VoiceHUD({
         </button>
 
         {/* Dynamic Status & Transcript Display */}
-        <div className="flex flex-col justify-center min-w-[200px] max-w-md sm:max-w-lg overflow-hidden py-0.5">
+        <div className="flex flex-col justify-center min-w-[200px] max-w-xs sm:max-w-md md:max-w-lg overflow-hidden py-0.5">
           {!isSupported ? (
             <div className="flex items-center gap-1.5 text-xs text-amber-400">
               <AlertCircle className="w-3.5 h-3.5 shrink-0" />
@@ -97,15 +169,15 @@ export default function VoiceHUD({
             </div>
           ) : (
             <p className="text-xs text-slate-400">
-              Click mic or use hotkeys to command canvas
+              Click mic or use quick palette to command canvas
             </p>
           )}
 
           {/* Sub-label for parsed action if present */}
           {lastParsedAction && (
             <div className="text-[10px] text-indigo-300 font-mono flex items-center gap-1 mt-0.5 truncate">
-              <span>Executing:</span>
-              <span className="text-emerald-400 font-medium">{lastParsedAction}</span>
+              <span className="text-slate-400">Action:</span>
+              <span className="text-emerald-400 font-medium truncate">{lastParsedAction}</span>
             </div>
           )}
         </div>
@@ -123,6 +195,20 @@ export default function VoiceHUD({
             <span>{confidencePercent}% match</span>
           </div>
         )}
+
+        {/* Quick Drawer Toggle */}
+        <button
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="p-1.5 rounded-full hover:bg-slate-800 text-slate-400 hover:text-slate-200 transition"
+          title={isExpanded ? "Collapse quick commands" : "Open quick commands & manual input"}
+          aria-label={isExpanded ? "Collapse palette" : "Open palette"}
+        >
+          {isExpanded ? (
+            <ChevronDown className="w-4 h-4" />
+          ) : (
+            <ChevronUp className="w-4 h-4" />
+          )}
+        </button>
       </div>
     </div>
   );

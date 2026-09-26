@@ -5,6 +5,22 @@ export const DEFAULT_NODE_HEIGHT = 120;
 export const DEFAULT_GAP = 60;
 
 /**
+ * Checks whether two 2D bounding boxes overlap, accounting for safety padding.
+ */
+export function boxesOverlap(
+  b1: { x: number; y: number; width: number; height: number },
+  b2: { x: number; y: number; width: number; height: number },
+  padding: number = 24
+): boolean {
+  return !(
+    b1.x + b1.width + padding <= b2.x ||
+    b1.x >= b2.x + b2.width + padding ||
+    b1.y + b1.height + padding <= b2.y ||
+    b1.y >= b2.y + b2.height + padding
+  );
+}
+
+/**
  * Calculates non-overlapping coordinates for a new node placed relative to an existing node.
  */
 export function calculateRelativePosition(
@@ -39,6 +55,53 @@ export function calculateRelativePosition(
         y: parentBounds.y,
       };
   }
+}
+
+/**
+ * Quadrant collision avoidance heuristic: scans radial offsets around proposed coordinates
+ * to ensure newly placed nodes never visually collide or overlap existing nodes.
+ */
+export function findNonOverlappingPosition(
+  proposed: { x: number; y: number },
+  width: number,
+  height: number,
+  existingBounds: NodeBounds[],
+  padding: number = 28
+): { x: number; y: number } {
+  const currentBox = { x: proposed.x, y: proposed.y, width, height };
+
+  const hasCollision = (box: { x: number; y: number; width: number; height: number }) => {
+    return existingBounds.some((existing) => boxesOverlap(box, existing, padding));
+  };
+
+  if (!hasCollision(currentBox)) {
+    return proposed;
+  }
+
+  // Spiral search across quadrants to find the closest non-overlapping position
+  const stepX = width + padding;
+  const stepY = height + padding;
+
+  for (let ring = 1; ring <= 6; ring++) {
+    const candidatePositions = [
+      { x: proposed.x + ring * stepX, y: proposed.y }, // Right
+      { x: proposed.x - ring * stepX, y: proposed.y }, // Left
+      { x: proposed.x, y: proposed.y + ring * stepY }, // Bottom
+      { x: proposed.x, y: proposed.y - ring * stepY }, // Top
+      { x: proposed.x + ring * stepX, y: proposed.y + ring * stepY }, // Bottom-Right
+      { x: proposed.x - ring * stepX, y: proposed.y + ring * stepY }, // Bottom-Left
+      { x: proposed.x + ring * stepX, y: proposed.y - ring * stepY }, // Top-Right
+      { x: proposed.x - ring * stepX, y: proposed.y - ring * stepY }, // Top-Left
+    ];
+
+    for (const cand of candidatePositions) {
+      if (!hasCollision({ x: cand.x, y: cand.y, width, height })) {
+        return cand;
+      }
+    }
+  }
+
+  return proposed;
 }
 
 export interface TreeLayoutOutput {

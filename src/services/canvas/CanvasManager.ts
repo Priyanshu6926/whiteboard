@@ -16,6 +16,7 @@ import {
 import {
   calculateRelativePosition,
   calculateTreeLayout,
+  findNonOverlappingPosition,
   DEFAULT_NODE_HEIGHT,
   DEFAULT_NODE_WIDTH,
 } from "./layoutUtils";
@@ -78,6 +79,17 @@ export class CanvasManager {
       posX = Math.round(viewport.center.x - DEFAULT_NODE_WIDTH / 2);
       posY = Math.round(viewport.center.y - DEFAULT_NODE_HEIGHT / 2);
     }
+
+    // SPAT-02: Apply quadrant collision avoidance to prevent node overlap
+    const existingBounds = this.getSpatialContext().existingNodes.map((n) => n.bounds);
+    const safePos = findNonOverlappingPosition(
+      { x: posX, y: posY },
+      DEFAULT_NODE_WIDTH,
+      DEFAULT_NODE_HEIGHT,
+      existingBounds
+    );
+    posX = safePos.x;
+    posY = safePos.y;
 
     const nodeType: NodeType = options.type || "card";
     const color: TLDefaultColorStyle = (options.color as TLDefaultColorStyle) || (
@@ -218,18 +230,12 @@ export class CanvasManager {
    * Creates a countdown timer node.
    */
   public setTimer(durationSeconds: number, title?: string): string {
-    const viewport = this.editor.getViewportPageBounds();
-    const posX = Math.round(viewport.center.x - 110);
-    const posY = Math.round(viewport.center.y - 70);
-
     const minutes = Math.floor(durationSeconds / 60);
     const seconds = durationSeconds % 60;
     const formatted = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
     const timerText = `⏱ ${title || "Sprint Timer"}\n${formatted}\n(${durationSeconds}s)`;
 
     return this.addNode({
-      x: posX,
-      y: posY,
       text: timerText,
       type: "quiz_block",
       color: "red",
