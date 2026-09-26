@@ -6,7 +6,7 @@ VoxCanvas is engineered in five vertical phases, starting with a deterministic t
 
 ## Phases
 
-- [ ] **Phase 1: Core Canvas & Schema Execution** - Initialize Next.js project with `@tldraw/tldraw` and deterministic CanvasManager service with manual keyboard test harness
+- [x] **Phase 1: Core Canvas & Schema Execution** - Initialize Next.js project with `@tldraw/tldraw` and deterministic CanvasManager service with manual keyboard test harness (completed 2026-09-26)
 - [ ] **Phase 2: Speech & Intelligence Pipeline** - Web Speech API live streaming hook, spatial context injection, and Zod action validation with cloud Gemini inference
 - [ ] **Phase 3: Hybrid Fallback Integration** - Dynamic connectivity router, local Ollama runner integration, and audio recorder fallback
 - [ ] **Phase 4: Collaborative Sync Engine** - Authoritative teacher WebSocket delta broadcast, read-only student UI route, and IndexedDB local persistence
@@ -31,11 +31,11 @@ VoxCanvas is engineered in five vertical phases, starting with a deterministic t
 Plans:
 **Wave 1**
 
-- [ ] 01-01: Initialize Next.js 14 App Router project with TypeScript, Tailwind CSS, `@tldraw/tldraw`, and core canvas shell
+- [x] 01-01: Initialize Next.js 14 App Router project with TypeScript, Tailwind CSS, `@tldraw/tldraw`, and core canvas shell
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 01-02: Implement `CanvasManager` mutation service and interactive keyboard test harness with collision-avoidance layout helpers
+- [x] 01-02: Implement `CanvasManager` mutation service and interactive keyboard test harness with collision-avoidance layout helpers
 
 ### Phase 2: Speech & Intelligence Pipeline
 
