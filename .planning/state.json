@@ -6,12 +6,12 @@
     {
       "number": "1",
       "name": "Core Canvas & Schema Execution",
-      "status": "in_progress"
+      "status": "complete"
     },
     {
       "number": "2",
       "name": "Speech & Intelligence Pipeline",
-      "status": "pending"
+      "status": "in_progress"
     },
     {
       "number": "3",
@@ -31,8 +31,8 @@
   ],
   "next": {
     "command": "/gsd-progress --next",
-    "label": "Advance to the next step",
-    "reason": "Phase 1 of 5 · 0% · executing"
+    "label": "Advance to the next step (plan phase 2)",
+    "reason": "Phase 2 of 5 — needs a plan"
   },
-  "updated_at": "2026-09-26T08:16:36.930Z"
+  "updated_at": "2026-09-26T08:42:02.372Z"
 }
