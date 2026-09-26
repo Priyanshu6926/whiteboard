@@ -7,7 +7,7 @@ VoxCanvas is engineered in five vertical phases, starting with a deterministic t
 ## Phases
 
 - [x] **Phase 1: Core Canvas & Schema Execution** - Initialize Next.js project with `@tldraw/tldraw` and deterministic CanvasManager service with manual keyboard test harness (completed 2026-09-26)
-- [ ] **Phase 2: Speech & Intelligence Pipeline** - Web Speech API live streaming hook, spatial context injection, and Zod action validation with cloud Gemini inference
+- [x] **Phase 2: Speech & Intelligence Pipeline** - Web Speech API live streaming hook, spatial context injection, and Zod action validation with cloud Gemini inference (completed 2026-09-27)
 - [ ] **Phase 3: Hybrid Fallback Integration** - Dynamic connectivity router, local Ollama runner integration, and audio recorder fallback
 - [ ] **Phase 4: Collaborative Sync Engine** - Authoritative teacher WebSocket delta broadcast, read-only student UI route, and IndexedDB local persistence
 - [ ] **Phase 5: Production Polish & Cursor Interpolation** - Cubic Bezier agent cursor animation, confidence scoring HUD, latency telemetry, and deployment configuration
@@ -55,11 +55,11 @@ Plans:
 Plans:
 **Wave 1**
 
-- [ ] 02-01: Build `useVoiceCommander` hook with interim token streaming and confidence score calculation
+- [x] 02-01: Build `useVoiceCommander` hook with interim token streaming and confidence score calculation
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 02-02: Build `/api/llm/cloud` route, spatial context injector, Zod schema guard, and action dispatcher
+- [x] 02-02: Build `/api/llm/cloud` route, spatial context injector, Zod schema guard, and action dispatcher
 
 ### Phase 3: Hybrid Fallback Integration
 

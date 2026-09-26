@@ -11,12 +11,12 @@
     {
       "number": "2",
       "name": "Speech & Intelligence Pipeline",
-      "status": "in_progress"
+      "status": "complete"
     },
     {
       "number": "3",
       "name": "Hybrid Fallback Integration",
-      "status": "pending"
+      "status": "in_progress"
     },
     {
       "number": "4",
@@ -31,8 +31,8 @@
   ],
   "next": {
     "command": "/gsd-progress --next",
-    "label": "Advance to the next step",
-    "reason": "Phase 2 of 5 · 20% · executing"
+    "label": "Advance to the next step (plan phase 3)",
+    "reason": "Phase 3 of 5 — needs a plan"
   },
-  "updated_at": "2026-09-26T18:44:34.355Z"
+  "updated_at": "2026-09-26T19:04:39.358Z"
 }

@@ -15,14 +15,14 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Spatial Intelligence
 
-- [ ] **SPAT-01**: System extracts real-time `CanvasSpatialContext` including viewport coordinates, zoom level, and all existing node bounding boxes
-- [ ] **SPAT-02**: System applies quadrant collision avoidance heuristics to place new nodes relative to parent nodes without visual overlap
+- [x] **SPAT-01**: System extracts real-time `CanvasSpatialContext` including viewport coordinates, zoom level, and all existing node bounding boxes
+- [x] **SPAT-02**: System applies quadrant collision avoidance heuristics to place new nodes relative to parent nodes without visual overlap
 
 ### Speech Processing
 
-- [ ] **VOIC-01**: User can speak commands with browser-native `webkitSpeechRecognition` providing live interim transcript previews (<50ms latency)
+- [x] **VOIC-01**: User can speak commands with browser-native `webkitSpeechRecognition` providing live interim transcript previews (<50ms latency)
 - [ ] **VOIC-02**: System automatically falls back to 3-second chunked WebM audio capture via `MediaRecorder` when native speech recognition fails or is noisy
-- [ ] **VOIC-03**: System computes and displays a speech transcription confidence score before routing commands
+- [x] **VOIC-03**: System computes and displays a speech transcription confidence score before routing commands
 
 ### Inference & Routing
 
@@ -33,8 +33,8 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Tool Calling & Schema Validation
 
-- [ ] **TOOL-01**: System validates all LLM outputs against a strict Zod discriminated union schema (`create_mindmap`, `create_node`, `connect_nodes`, `set_countdown_timer`)
-- [ ] **TOOL-02**: System safely rejects unstructured markdown or malformed JSON at the validation boundary and displays clear error feedback
+- [x] **TOOL-01**: System validates all LLM outputs against a strict Zod discriminated union schema (`create_mindmap`, `create_node`, `connect_nodes`, `set_countdown_timer`)
+- [x] **TOOL-02**: System safely rejects unstructured markdown or malformed JSON at the validation boundary and displays clear error feedback
 
 ### Real-Time Synchronization & Persistence
 
@@ -86,12 +86,12 @@ Which phases cover which requirements.
 | CANV-01 | Phase 1 | Complete |
 | CANV-02 | Phase 1 | Complete |
 | CANV-03 | Phase 1 | Complete |
-| SPAT-01 | Phase 2 | Pending |
-| SPAT-02 | Phase 2 | Pending |
-| VOIC-01 | Phase 2 | Pending |
-| VOIC-03 | Phase 2 | Pending |
-| TOOL-01 | Phase 2 | Pending |
-| TOOL-02 | Phase 2 | Pending |
+| SPAT-01 | Phase 2 | Complete |
+| SPAT-02 | Phase 2 | Complete |
+| VOIC-01 | Phase 2 | Complete |
+| VOIC-03 | Phase 2 | Complete |
+| TOOL-01 | Phase 2 | Complete |
+| TOOL-02 | Phase 2 | Complete |
 | ROUT-01 | Phase 3 | Pending |
 | ROUT-02 | Phase 3 | Pending |
 | ROUT-03 | Phase 3 | Pending |
