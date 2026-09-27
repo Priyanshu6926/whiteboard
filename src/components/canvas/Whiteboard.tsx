@@ -6,6 +6,7 @@ import "@tldraw/tldraw/tldraw.css";
 import { CanvasManager } from "@/services/canvas/CanvasManager";
 import KeyboardHarness from "./KeyboardHarness";
 import VoiceHUD from "@/components/voice/VoiceHUD";
+import AudioChunkModal from "@/components/voice/AudioChunkModal";
 import { useVoiceCommander } from "@/hooks/useVoiceCommander";
 import { useNetworkMonitor } from "@/hooks/useNetworkMonitor";
 import { dispatchCanvasAction } from "@/services/ai/actionDispatcher";
@@ -20,6 +21,7 @@ export default function Whiteboard({ onEditorMount, children }: WhiteboardProps)
   const [editor, setEditor] = useState<Editor | null>(null);
   const [canvasManager, setCanvasManager] = useState<CanvasManager | null>(null);
   const [lastVoiceAction, setLastVoiceAction] = useState<string | null>(null);
+  const [isAudioModalOpen, setIsAudioModalOpen] = useState<boolean>(false);
   const canvasManagerRef = useRef<CanvasManager | null>(null);
   const editorRef = useRef<Editor | null>(null);
 
@@ -95,6 +97,14 @@ export default function Whiteboard({ onEditorMount, children }: WhiteboardProps)
             networkMonitor={networkMonitor}
             lastParsedAction={lastVoiceAction}
             onSimulateCommand={(text) => handleVoiceCommand(text, 0.95)}
+            onOpenAudioChunkModal={() => setIsAudioModalOpen(true)}
+          />
+          <AudioChunkModal
+            isOpen={isAudioModalOpen}
+            onClose={() => setIsAudioModalOpen(false)}
+            onTranscriptReady={(transcript, confidence) => {
+              handleVoiceCommand(transcript, confidence);
+            }}
           />
           {children}
         </>

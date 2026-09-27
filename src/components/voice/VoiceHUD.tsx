@@ -11,6 +11,7 @@ import {
   Send,
   Cloud,
   Cpu,
+  Radio,
 } from "lucide-react";
 import { UseVoiceCommanderReturn } from "@/hooks/useVoiceCommander";
 import { UseNetworkMonitorReturn } from "@/hooks/useNetworkMonitor";
@@ -20,6 +21,7 @@ interface VoiceHUDProps {
   networkMonitor?: UseNetworkMonitorReturn;
   lastParsedAction?: string | null;
   onSimulateCommand?: (command: string) => void;
+  onOpenAudioChunkModal?: () => void;
 }
 
 export default function VoiceHUD({
@@ -27,6 +29,7 @@ export default function VoiceHUD({
   networkMonitor,
   lastParsedAction,
   onSimulateCommand,
+  onOpenAudioChunkModal,
 }: VoiceHUDProps) {
   const {
     isListening,
@@ -69,6 +72,16 @@ export default function VoiceHUD({
               Voice Command Quick Palette
             </span>
             <div className="flex items-center gap-2">
+              {onOpenAudioChunkModal && (
+                <button
+                  onClick={onOpenAudioChunkModal}
+                  className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-indigo-950 hover:bg-indigo-900 text-indigo-300 border border-indigo-700/60 transition flex items-center gap-1"
+                  title="Open 3-second MediaRecorder audio chunk fallback (VOIC-02)"
+                >
+                  <Radio className="w-3 h-3 text-indigo-400" />
+                  <span>3s Chunks</span>
+                </button>
+              )}
               {networkMonitor && (
                 <button
                   onClick={networkMonitor.toggleOverride}
