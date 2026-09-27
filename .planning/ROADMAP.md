@@ -77,8 +77,12 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
+**Wave 1**
 
 - [ ] 03-01: Implement network health monitor, dynamic endpoint switcher, and Ollama edge client
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
 - [ ] 03-02: Implement `MediaRecorder` 3-second audio chunking fallback pipeline and verify complete offline operation
 
 ### Phase 4: Collaborative Sync Engine
