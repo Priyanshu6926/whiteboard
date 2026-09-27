@@ -21,15 +21,15 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Speech Processing
 
 - [x] **VOIC-01**: User can speak commands with browser-native `webkitSpeechRecognition` providing live interim transcript previews (<50ms latency)
-- [ ] **VOIC-02**: System automatically falls back to 3-second chunked WebM audio capture via `MediaRecorder` when native speech recognition fails or is noisy
+- [x] **VOIC-02**: System automatically falls back to 3-second chunked WebM audio capture via `MediaRecorder` when native speech recognition fails or is noisy
 - [x] **VOIC-03**: System computes and displays a speech transcription confidence score before routing commands
 
 ### Inference & Routing
 
-- [ ] **ROUT-01**: System tracks connectivity state via `navigator.onLine` and a 600ms `/api/healthz` heartbeat check
-- [ ] **ROUT-02**: System routes prompts to cloud Gemini/Gemma endpoint (`/api/llm/cloud`) when connected with round-trip < 1.8s
-- [ ] **ROUT-03**: System automatically reroutes prompts to local Ollama (`http://localhost:11434/api/chat` running `gemma:2b` or `qwen2.5:3b`) when disconnected, executing in < 3.2s
-- [ ] **ROUT-04**: System guarantees identical system prompt contracts and JSON schemas across both cloud and local LLM engines
+- [x] **ROUT-01**: System tracks connectivity state via `navigator.onLine` and a 600ms `/api/healthz` heartbeat check
+- [x] **ROUT-02**: System routes prompts to cloud Gemini/Gemma endpoint (`/api/llm/cloud`) when connected with round-trip < 1.8s
+- [x] **ROUT-03**: System automatically reroutes prompts to local Ollama (`http://localhost:11434/api/chat` running `gemma:2b` or `qwen2.5:3b`) when disconnected, executing in < 3.2s
+- [x] **ROUT-04**: System guarantees identical system prompt contracts and JSON schemas across both cloud and local LLM engines
 
 ### Tool Calling & Schema Validation
 
@@ -92,11 +92,11 @@ Which phases cover which requirements.
 | VOIC-03 | Phase 2 | Complete |
 | TOOL-01 | Phase 2 | Complete |
 | TOOL-02 | Phase 2 | Complete |
-| ROUT-01 | Phase 3 | Pending |
-| ROUT-02 | Phase 3 | Pending |
-| ROUT-03 | Phase 3 | Pending |
-| ROUT-04 | Phase 3 | Pending |
-| VOIC-02 | Phase 3 | Pending |
+| ROUT-01 | Phase 3 | Complete |
+| ROUT-02 | Phase 3 | Complete |
+| ROUT-03 | Phase 3 | Complete |
+| ROUT-04 | Phase 3 | Complete |
+| VOIC-02 | Phase 3 | Complete |
 | SYNC-01 | Phase 4 | Pending |
 | SYNC-02 | Phase 4 | Pending |
 | SYNC-03 | Phase 4 | Pending |
