@@ -7,8 +7,9 @@ import { CanvasManager } from "@/services/canvas/CanvasManager";
 import KeyboardHarness from "./KeyboardHarness";
 import VoiceHUD from "@/components/voice/VoiceHUD";
 import { useVoiceCommander } from "@/hooks/useVoiceCommander";
+import { useNetworkMonitor } from "@/hooks/useNetworkMonitor";
 import { dispatchCanvasAction } from "@/services/ai/actionDispatcher";
-import { LLMResponse } from "@/types/actions";
+import { routeInference } from "@/services/ai/inferenceRouter";
 
 interface WhiteboardProps {
   onEditorMount?: (editor: Editor) => void;
@@ -22,33 +23,42 @@ export default function Whiteboard({ onEditorMount, children }: WhiteboardProps)
   const canvasManagerRef = useRef<CanvasManager | null>(null);
   const editorRef = useRef<Editor | null>(null);
 
+  const networkMonitor = useNetworkMonitor();
+  const networkMonitorRef = useRef(networkMonitor);
+
+  // Keep ref updated for callbacks
+  networkMonitorRef.current = networkMonitor;
+
   const handleVoiceCommand = useCallback(
     async (transcript: string, confidence: number) => {
       const manager = canvasManagerRef.current;
       if (!manager) return;
 
+      const currentMode = networkMonitorRef.current.effectiveMode;
       console.log(
-        `[VoiceCommander] Spoken: "${transcript}" (confidence: ${confidence.toFixed(2)})`
+        `[VoiceCommander] Spoken: "${transcript}" (confidence: ${confidence.toFixed(
+          2
+        )}, engine: ${currentMode})`
       );
-      setLastVoiceAction(`Parsing: "${transcript}"...`);
+      setLastVoiceAction(`Routing via ${currentMode.toUpperCase()}: "${transcript}"...`);
 
       try {
         const spatialContext = manager.getSpatialContext();
-        const res = await fetch("/api/llm/cloud", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ transcript, spatialContext }),
+        const result = await routeInference({
+          transcript,
+          spatialContext,
+          preferredEngine: currentMode,
         });
 
-        const data: LLMResponse = await res.json();
-        if (data.success && data.action) {
-          const result = dispatchCanvasAction(data.action, manager);
-          setLastVoiceAction(result.details);
+        if (result.success && result.action) {
+          const dispatchResult = dispatchCanvasAction(result.action, manager);
+          const engineTag = result.engine === "cloud" ? "Cloud" : "Edge";
+          setLastVoiceAction(`[${engineTag} ${result.latencyMs}ms] ${dispatchResult.details}`);
         } else {
-          setLastVoiceAction(`Error: ${data.error || "Could not parse command"}`);
+          setLastVoiceAction(`Error: ${result.error || "Could not parse command"}`);
         }
       } catch (err) {
-        console.error("[VoiceCommander] API dispatch failed:", err);
+        console.error("[VoiceCommander] Inference routing failed:", err);
         setLastVoiceAction("Voice inference failed");
       }
     },
@@ -82,6 +92,7 @@ export default function Whiteboard({ onEditorMount, children }: WhiteboardProps)
           <KeyboardHarness canvasManager={canvasManager} />
           <VoiceHUD
             voiceCommander={voiceCommander}
+            networkMonitor={networkMonitor}
             lastParsedAction={lastVoiceAction}
             onSimulateCommand={(text) => handleVoiceCommand(text, 0.95)}
           />

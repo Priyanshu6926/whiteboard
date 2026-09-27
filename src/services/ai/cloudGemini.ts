@@ -5,7 +5,7 @@ import { CanvasSpatialContext } from "@/types/canvas";
 /**
  * Builds the system instruction with spatial grounding and schema constraints.
  */
-function buildSystemInstruction(spatialContext: CanvasSpatialContext): string {
+export function buildSystemInstruction(spatialContext: CanvasSpatialContext): string {
   const visibleNodes = spatialContext.existingNodes.map((n) => ({
     id: n.id,
     type: n.type,
@@ -167,7 +167,7 @@ export function generateMockFallbackAction(
 /**
  * Strips markdown code block formatting if returned by an LLM.
  */
-function cleanJsonResponse(rawText: string): string {
+export function cleanJsonResponse(rawText: string): string {
   let cleaned = rawText.trim();
   if (cleaned.startsWith("```")) {
     // Remove opening ```json or ```

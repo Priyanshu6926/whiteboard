@@ -1,17 +1,30 @@
 "use client";
 
 import React, { useState } from "react";
-import { Mic, AlertCircle, Sparkles, AudioWaveform, ChevronUp, ChevronDown, Send } from "lucide-react";
+import {
+  Mic,
+  AlertCircle,
+  Sparkles,
+  AudioWaveform,
+  ChevronUp,
+  ChevronDown,
+  Send,
+  Cloud,
+  Cpu,
+} from "lucide-react";
 import { UseVoiceCommanderReturn } from "@/hooks/useVoiceCommander";
+import { UseNetworkMonitorReturn } from "@/hooks/useNetworkMonitor";
 
 interface VoiceHUDProps {
   voiceCommander: UseVoiceCommanderReturn;
+  networkMonitor?: UseNetworkMonitorReturn;
   lastParsedAction?: string | null;
   onSimulateCommand?: (command: string) => void;
 }
 
 export default function VoiceHUD({
   voiceCommander,
+  networkMonitor,
   lastParsedAction,
   onSimulateCommand,
 }: VoiceHUDProps) {
@@ -55,7 +68,18 @@ export default function VoiceHUD({
               <Sparkles className="w-3.5 h-3.5" />
               Voice Command Quick Palette
             </span>
-            <span className="text-[10px] text-slate-500">Accessible Input</span>
+            <div className="flex items-center gap-2">
+              {networkMonitor && (
+                <button
+                  onClick={networkMonitor.toggleOverride}
+                  className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition"
+                  title="Click to switch between Auto, Cloud, and Edge inference modes"
+                >
+                  Mode: <span className="text-indigo-300 font-semibold">{networkMonitor.manualOverride.toUpperCase()}</span>
+                </button>
+              )}
+              <span className="text-[10px] text-slate-500">Accessible Input</span>
+            </div>
           </div>
 
           {/* Quick chips */}
@@ -135,7 +159,7 @@ export default function VoiceHUD({
         </button>
 
         {/* Dynamic Status & Transcript Display */}
-        <div className="flex flex-col justify-center min-w-[200px] max-w-xs sm:max-w-md md:max-w-lg overflow-hidden py-0.5">
+        <div className="flex flex-col justify-center min-w-[190px] max-w-xs sm:max-w-md md:max-w-lg overflow-hidden py-0.5">
           {!isSupported ? (
             <div className="flex items-center gap-1.5 text-xs text-amber-400">
               <AlertCircle className="w-3.5 h-3.5 shrink-0" />
@@ -182,10 +206,46 @@ export default function VoiceHUD({
           )}
         </div>
 
+        {/* Network & Engine Mode Indicator (ROUT-01, ROUT-02, ROUT-03) */}
+        {networkMonitor && (
+          <button
+            onClick={networkMonitor.toggleOverride}
+            className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-mono border transition-all hover:scale-105 active:scale-95 shrink-0 bg-slate-950/70 border-slate-700/60"
+            title={`Active inference engine: ${
+              networkMonitor.effectiveMode === "cloud" ? "Google Gemini (Cloud)" : "Ollama / Local (Edge)"
+            }. Click to cycle: Auto, Force Cloud, Force Edge.`}
+          >
+            {networkMonitor.effectiveMode === "cloud" ? (
+              <Cloud className="w-3 h-3 text-emerald-400" />
+            ) : (
+              <Cpu className="w-3 h-3 text-amber-400" />
+            )}
+            <span
+              className={
+                networkMonitor.effectiveMode === "cloud"
+                  ? "text-emerald-300 font-medium"
+                  : "text-amber-300 font-medium"
+              }
+            >
+              {networkMonitor.effectiveMode === "cloud" ? "Cloud" : "Edge"}
+            </span>
+            {networkMonitor.manualOverride !== "auto" && (
+              <span className="text-[8px] px-1 rounded bg-indigo-900/60 text-indigo-300 font-bold border border-indigo-700/40">
+                LOCKED
+              </span>
+            )}
+            {networkMonitor.latencyMs !== null && (
+              <span className="text-slate-500 text-[9px]">
+                {networkMonitor.latencyMs}ms
+              </span>
+            )}
+          </button>
+        )}
+
         {/* Confidence Badge */}
         {confidencePercent !== null && (
           <div
-            className={`hidden sm:flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono font-medium border shrink-0 ${
+            className={`hidden md:flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono font-medium border shrink-0 ${
               confidencePercent >= 80
                 ? "bg-emerald-950/60 text-emerald-300 border-emerald-800/50"
                 : "bg-amber-950/60 text-amber-300 border-amber-800/50"
