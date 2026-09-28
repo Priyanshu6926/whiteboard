@@ -100,8 +100,12 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
+**Wave 1**
 
 - [ ] 04-01: Implement Socket.IO real-time relay server with room isolation and sequence-numbered delta broadcasting
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
 - [ ] 04-02: Build `/view/[roomId]` read-only student page and IndexedDB debounced persistence layer
 
 ### Phase 5: Production Polish & Cursor Interpolation
