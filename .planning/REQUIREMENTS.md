@@ -38,9 +38,9 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Real-Time Synchronization & Persistence
 
-- [ ] **SYNC-01**: Authoritative teacher client broadcasts atomic `CanvasDeltaPayload` diffs over Socket.IO with sequence IDs (<120ms latency across 30 concurrent viewers)
-- [ ] **SYNC-02**: Student clients can join a room via `/view/[roomId]` in a read-only mode that mirrors all teacher canvas updates in real time
-- [ ] **SYNC-03**: System persists canvas transactions to local IndexedDB every 3 seconds to ensure instant state restoration on page refresh or offline reload
+- [x] **SYNC-01**: Authoritative teacher client broadcasts atomic `CanvasDeltaPayload` diffs over Socket.IO with sequence IDs (<120ms latency across 30 concurrent viewers)
+- [x] **SYNC-02**: Student clients can join a room via `/view/[roomId]` in a read-only mode that mirrors all teacher canvas updates in real time
+- [x] **SYNC-03**: System persists canvas transactions to local IndexedDB every 3 seconds to ensure instant state restoration on page refresh or offline reload
 
 ### Visual Agent Presence & UX
 
@@ -97,8 +97,8 @@ Which phases cover which requirements.
 | ROUT-03 | Phase 3 | Complete |
 | ROUT-04 | Phase 3 | Complete |
 | VOIC-02 | Phase 3 | Complete |
-| SYNC-01 | Phase 4 | Pending |
-| SYNC-02 | Phase 4 | Pending |
-| SYNC-03 | Phase 4 | Pending |
+| SYNC-01 | Phase 4 | Complete |
+| SYNC-02 | Phase 4 | Complete |
+| SYNC-03 | Phase 4 | Complete |
 | VIZ-01 | Phase 5 | Pending |
 | VIZ-02 | Phase 5 | Pending |
