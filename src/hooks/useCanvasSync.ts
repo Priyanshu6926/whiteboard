@@ -25,6 +25,7 @@ export interface UseCanvasSyncReturn {
   lastSequenceId: number;
   roomId: string;
   role: SyncClientRole;
+  isTeacherPresent: boolean;
   socket: Socket | null;
 }
 
@@ -35,6 +36,7 @@ export function useCanvasSync({
   serverUrl = process.env.NEXT_PUBLIC_SYNC_SERVER_URL || "http://localhost:4001",
 }: UseCanvasSyncOptions): UseCanvasSyncReturn {
   const [isConnected, setIsConnected] = useState(false);
+  const [isTeacherPresent, setIsTeacherPresent] = useState(false);
   const [viewerCount, setViewerCount] = useState(0);
   const [latencyMs, setLatencyMs] = useState(0);
   const [lastSequenceId, setLastSequenceId] = useState(0);
@@ -71,6 +73,7 @@ export function useCanvasSync({
 
     socket.on(SYNC_EVENTS.ROOM_STATE, (state: SyncRoomState) => {
       setViewerCount(state.viewerCount || 0);
+      setIsTeacherPresent(Boolean(state.teacherId));
       if (state.lastSequenceId) {
         setLastSequenceId(state.lastSequenceId);
       }
@@ -220,6 +223,13 @@ export function useCanvasSync({
     };
   }, [editor, roomId, role]);
 
+  // If student and editor mounts after socket connected, request snapshot immediately
+  useEffect(() => {
+    if (role === "student" && editor && socketRef.current?.connected) {
+      socketRef.current.emit(SYNC_EVENTS.REQUEST_SNAPSHOT, { roomId });
+    }
+  }, [editor, role, roomId]);
+
   return {
     isConnected,
     viewerCount,
@@ -227,6 +237,7 @@ export function useCanvasSync({
     lastSequenceId,
     roomId,
     role,
+    isTeacherPresent,
     socket: socketRef.current,
   };
 }
