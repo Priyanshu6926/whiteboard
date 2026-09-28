@@ -44,8 +44,8 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Visual Agent Presence & UX
 
-- [ ] **VIZ-01**: Visual agent cursor computes and animates along a cubic Bezier curve trajectory over 400ms ease-out before instantiating shapes
-- [ ] **VIZ-02**: UI displays active network mode (Cloud vs Edge), voice status pill, and execution progress HUD
+- [x] **VIZ-01**: Visual agent cursor computes and animates along a cubic Bezier curve trajectory over 400ms ease-out before instantiating shapes
+- [x] **VIZ-02**: UI displays active network mode (Cloud vs Edge), voice status pill, and execution progress HUD
 
 ## v2 Requirements
 
@@ -100,5 +100,5 @@ Which phases cover which requirements.
 | SYNC-01 | Phase 4 | Complete |
 | SYNC-02 | Phase 4 | Complete |
 | SYNC-03 | Phase 4 | Complete |
-| VIZ-01 | Phase 5 | Pending |
-| VIZ-02 | Phase 5 | Pending |
+| VIZ-01 | Phase 5 | Complete |
+| VIZ-02 | Phase 5 | Complete |
