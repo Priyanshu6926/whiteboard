@@ -9,7 +9,7 @@ VoxCanvas is engineered in five vertical phases, starting with a deterministic t
 - [x] **Phase 1: Core Canvas & Schema Execution** - Initialize Next.js project with `@tldraw/tldraw` and deterministic CanvasManager service with manual keyboard test harness (completed 2026-09-26)
 - [x] **Phase 2: Speech & Intelligence Pipeline** - Web Speech API live streaming hook, spatial context injection, and Zod action validation with cloud Gemini inference (completed 2026-09-27)
 - [x] **Phase 3: Hybrid Fallback Integration** - Dynamic connectivity router, local Ollama runner integration, and audio recorder fallback (completed 2026-09-27)
-- [ ] **Phase 4: Collaborative Sync Engine** - Authoritative teacher WebSocket delta broadcast, read-only student UI route, and IndexedDB local persistence
+- [x] **Phase 4: Collaborative Sync Engine** - Authoritative teacher WebSocket delta broadcast, read-only student UI route, and IndexedDB local persistence (completed 2026-09-28)
 - [ ] **Phase 5: Production Polish & Cursor Interpolation** - Cubic Bezier agent cursor animation, confidence scoring HUD, latency telemetry, and deployment configuration
 
 ## Phase Details
@@ -102,11 +102,11 @@ Plans:
 Plans:
 **Wave 1**
 
-- [ ] 04-01: Implement Socket.IO real-time relay server with room isolation and sequence-numbered delta broadcasting
+- [x] 04-01: Implement Socket.IO real-time relay server with room isolation and sequence-numbered delta broadcasting
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 04-02: Build `/view/[roomId]` read-only student page and IndexedDB debounced persistence layer
+- [x] 04-02: Build `/view/[roomId]` read-only student page and IndexedDB debounced persistence layer
 
 ### Phase 5: Production Polish & Cursor Interpolation
 
