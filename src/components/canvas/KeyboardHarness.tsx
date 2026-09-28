@@ -6,9 +6,17 @@ import HarnessHUD from "./HarnessHUD";
 
 interface KeyboardHarnessProps {
   canvasManager: CanvasManager | null;
+  roomId?: string;
+  viewerCount?: number;
+  isSyncConnected?: boolean;
 }
 
-export default function KeyboardHarness({ canvasManager }: KeyboardHarnessProps) {
+export default function KeyboardHarness({
+  canvasManager,
+  roomId = "CLASS-101",
+  viewerCount = 0,
+  isSyncConnected = false,
+}: KeyboardHarnessProps) {
   const [nodeCount, setNodeCount] = useState<number>(0);
   const [lastAction, setLastAction] = useState<string | null>(null);
   const recentNodesRef = useRef<string[]>([]);
@@ -148,6 +156,9 @@ export default function KeyboardHarness({ canvasManager }: KeyboardHarnessProps)
       lastAction={lastAction}
       onActionClick={executeAction}
       onClear={handleClear}
+      roomId={roomId}
+      viewerCount={viewerCount}
+      isSyncConnected={isSyncConnected}
     />
   );
 }

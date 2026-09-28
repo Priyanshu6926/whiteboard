@@ -1,13 +1,24 @@
 "use client";
 
-import React from "react";
-import { Sparkles, Keyboard, Activity, RefreshCw } from "lucide-react";
+import React, { useState } from "react";
+import {
+  Sparkles,
+  Keyboard,
+  Activity,
+  RefreshCw,
+  Users,
+  Share2,
+  Check,
+} from "lucide-react";
 
 interface HarnessHUDProps {
   nodeCount: number;
   lastAction: string | null;
   onActionClick: (action: string) => void;
   onClear: () => void;
+  roomId?: string;
+  viewerCount?: number;
+  isSyncConnected?: boolean;
 }
 
 export default function HarnessHUD({
@@ -15,7 +26,20 @@ export default function HarnessHUD({
   lastAction,
   onActionClick,
   onClear,
+  roomId = "CLASS-101",
+  viewerCount = 0,
+  isSyncConnected = false,
 }: HarnessHUDProps) {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyLink = () => {
+    if (typeof window === "undefined") return;
+    const url = `${window.location.origin}/view/${roomId}`;
+    navigator.clipboard.writeText(url);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
     <div className="fixed top-4 right-4 z-50 flex flex-col gap-2 max-w-sm pointer-events-auto">
       {/* HUD Header & Status Card */}
@@ -48,8 +72,50 @@ export default function HarnessHUD({
           </span>
         </div>
 
+        {/* Room Broadcast & Live Viewer Indicator (SYNC-01) */}
+        <div className="flex items-center justify-between p-2 rounded-lg bg-indigo-950/40 border border-indigo-800/40 text-xs">
+          <div className="flex items-center gap-2 min-w-0">
+            <div className="flex items-center gap-1.5 font-mono text-[11px] text-indigo-300 truncate">
+              <Users className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
+              <span className="truncate">{roomId}</span>
+            </div>
+            <span
+              className={`px-1.5 py-0.2 rounded-full text-[10px] font-mono border flex items-center gap-1 shrink-0 ${
+                isSyncConnected
+                  ? "bg-emerald-950/80 text-emerald-300 border-emerald-800/50"
+                  : "bg-slate-800 text-slate-400 border-slate-700"
+              }`}
+            >
+              <span
+                className={`w-1.5 h-1.5 rounded-full ${
+                  isSyncConnected ? "bg-emerald-400 animate-pulse" : "bg-slate-500"
+                }`}
+              />
+              {viewerCount} {viewerCount === 1 ? "viewer" : "viewers"}
+            </span>
+          </div>
+
+          <button
+            onClick={handleCopyLink}
+            className="flex items-center gap-1 px-2 py-0.5 rounded bg-indigo-600 hover:bg-indigo-500 text-white text-[10px] font-medium transition active:scale-95 shrink-0"
+            title="Copy read-only student viewer link (/view/[roomId])"
+          >
+            {copied ? (
+              <>
+                <Check className="w-3 h-3 text-emerald-300" />
+                <span>Copied!</span>
+              </>
+            ) : (
+              <>
+                <Share2 className="w-3 h-3" />
+                <span>Share</span>
+              </>
+            )}
+          </button>
+        </div>
+
         {/* Hotkey Controls Matrix */}
-        <div className="flex flex-col gap-1.5 pt-1">
+        <div className="flex flex-col gap-1.5 pt-0.5">
           <div className="flex items-center justify-between text-[11px] text-slate-400 font-medium px-0.5">
             <span className="flex items-center gap-1">
               <Keyboard className="w-3 h-3 text-slate-400" /> Test Harness Hotkeys
